@@ -22,19 +22,6 @@ X = np.array([
 y = np.array([1,1,1,-1,-1,-1])
 
 
-# A2 Q1
-X = np.array([
-  [0.0, 1.5],
-  [1.0, 1.0],
-  [2.0, 2.0],
-  [2.0, 0.0],
-  [0.0, 0.0],
-  [1.0, 0.0],
-  [0.0, 1.0],
-])
-
-y = np.array([1,1,1,1,-1,-1,-1])
-
 n1 = len(X[ y ==  1])         # Number of points label ' 1'
 n2 = len(X[ y == -1])         # Number of points label '-1'
 
@@ -42,9 +29,6 @@ n2 = len(X[ y == -1])         # Number of points label '-1'
 np.set_printoptions(2)
 
 # Calculate Means of Each Feature [2 x 2] 2 classes, 2 features
-means = np.array((np.mean(X[y == 1], axis = 0),np.mean(X[y == -1], axis = 0)))
-means
-
 m1 = np.mean(X[y == 1], axis = 0)
 m2 = np.mean(X[y == -1], axis = 0)
 
@@ -74,12 +58,7 @@ for i in range(X.shape[0]):
 print('Weight = ', w0_new, w_new)
 w_lda = np.hstack((w_new,w0_new))
 ax = plot_data.plot_data(X,y)
-plot_data.plot_lines( X, y, w_lda, ax, color = 'black', label = 'LDA_alp', linestyle = '-')
+plot_data.plot_lines(X,y, w_svm, ax, label = 'SVM', color = 'black', linestyle = '-', alpha = 0.5)
+plot_data.plot_lines( X, y, w_lda, ax, color = 'purple', linewidth = 3.5, label = 'LDA', linestyle = 'dotted', alpha = 1)
 
-
-ayak = SVM(C=1e6)
-ayak.fit(X,y)
-ayak.w
-ayak.b
-w_svm_sgo = np.hstack((ayak.w,ayak.b))
-plot_data.plot_lines( X, y, w_svm_sgo, ax, color = 'black', label = 'SVM_sgo', linestyle = '-')
+ax.set_title('Data Points, Seperating Hyperplanes, Support Vectors')

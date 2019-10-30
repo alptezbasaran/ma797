@@ -81,3 +81,8 @@ H == Q
 
 q = np.ones((X.shape[0],1))
 q
+
+w_svm = np.hstack((w.flatten(),b[0]))
+w_svm
+
+plot_data.plot_lines(X,y, w_svm, ax, label = 'SVM', color = 'green', linestyle = 'dashed')

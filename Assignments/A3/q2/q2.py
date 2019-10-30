@@ -25,13 +25,13 @@ class Plotter:
     ax = plt.gca()
     return(ax)
 
-  def plot_lines(self, X, y, w, ax, label, color = 'black', linestyle = '-', linewidth = 2):
+  def plot_lines(self, X, y, w, ax, label, color = 'black', linestyle = '-', linewidth = 2, alpha = 1):
     color = color
     label = label
     linestyle = linestyle
     linewidth = linewidth
     ax.plot([X.min()-0.1, X.max()+0.1],[-(w[0]*(X.min()-0.1)+w[2])/w[1], -(w[0]*(X.max()+0.1)+w[2])/w[1]],
-             label = label, linestyle = linestyle, linewidth = linewidth, color = color)
+             label = label, linestyle = linestyle, linewidth = linewidth, color = color, alpha = alpha)
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', ncol=1, title = 'Method')
 #    plt.pause(pause_time)
     plt.show()
@@ -156,7 +156,7 @@ X = np.array([
   [0.0, 1.0],
 ])
 
-y = np.array([1,1,1,1,0,0,0])
+y = np.array([1,1,1,1,-1,-1,-1])
 
 # Fitting SVM to the Training set
 from sklearn.svm import SVC
