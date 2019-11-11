@@ -31,7 +31,7 @@ model.add(tf.keras.layers.Conv2D(filters=32, kernel_size=5, padding="same", acti
 # 2. Maxpool
 model.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2, padding='same'))
 # 3. Conv2D
-model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding="same", activation="relu"))
+model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=5, padding="same", activation="relu"))
 # 4. Maxpool
 model.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2, padding='same'))
 # 5. Flatten
@@ -51,14 +51,20 @@ model.compile(loss="sparse_categorical_crossentropy",
               optimizer="Adam", metrics=["sparse_categorical_accuracy"])
 
 # Tensorboard
-log_dir = 'log'+ datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+log_dir = 'q1_log'+ datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1, write_graph=True, write_images=True)
+
+# Callbacks
+early_stoppping = tf.keras.callbacks.EarlyStopping(patience=5, monitor='val_loss', min_delta=1e-4, verbose=1)
+save_checkpoint = tf.keras.callbacks.ModelCheckpoint(filepath='bestq1.h5', save_best_only=True, monitor='val_loss', verbose=1)
+reduce_lr       = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2,patience=2, min_lr=1e-2, verbose=1)
 
 # Fit
-model.fit(x_train, y_train,batch_size = 50, validation_split = 0.2 ,epochs=5000, callbacks=[tensorboard_callback])
+model.fit(x_train, y_train,batch_size = 50, validation_split = 0.2 ,epochs=5000, callbacks=[tensorboard_callback, early_stoppping, save_checkpoint, reduce_lr])
 
 # Eval
 test_loss, test_accuracy = model.evaluate(x_test, y_test)
 
-for i in range(x_train.shape[0]):
-  plt.imshow(x_test[i,:,:,0])
+# Load model
+loaded = tf.keras.models.load_model('bestq1.h5')
+test_loss, test_accuracy = loaded.evaluate(x_test, y_test, verbose = 0)
