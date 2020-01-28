@@ -60,7 +60,7 @@ for vl in vector_length:
     log_dir = 'rnn_log_hs'+ str(hs) + '_vec_len_' + str(vl)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, update_freq='epoch', profile_batch = 0)
     # Early Stop
-    early_stoppping = tf.keras.callbacks.EarlyStopping(patience=10, monitor='val_loss', min_delta=1e-4, verbose=1)
+    early_stoppping = tf.keras.callbacks.EarlyStopping(patience=10, monitor='val_loss', verbose=1)
     # Save
     save_checkpoint = tf.keras.callbacks.ModelCheckpoint(filepath= 'rnn_log_hs'+ str(hs) + '_vec_len_' + str(vl) + '.h5',
                                                          save_best_only=True,
